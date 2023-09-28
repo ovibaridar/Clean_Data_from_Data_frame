@@ -20,7 +20,7 @@ while True:
     user_input = input("User: ")
     if user_input == "*":
         break
-
+    # bangladesh
     # Define a list of data frames
     data_frames = [capitals, bangladesh_universities, bangladesh_Collage, reg_que]
 
@@ -29,11 +29,13 @@ while True:
 
     # Initialize variables to keep track of similarity scores and responses
     max_similarity = -1.0
-    best_response = "No matching answer found."
+    best_response = ""
+    message = ""
 
     # Iterate through the data frames and check for similarity
     for df in data_frames:
         if 'que' in df.columns and 'ans' in df.columns:
+
             # Fit and transform the questions in the data frame
             tfidf_matrix = vectorizer.fit_transform(df['que'])
 
@@ -56,4 +58,9 @@ while True:
                 best_response = response
 
     # Print the best response
-    print("Chat Bot : " + str(len(best_response)))
+    if not best_response.empty:
+        len_of_best_response = len(best_response)
+        print("Chat Bot : ")
+        for i in range(1, len_of_best_response):
+            message = message + str(best_response.iloc[i]) + ""
+    print(message)
