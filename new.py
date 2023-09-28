@@ -29,7 +29,10 @@ while True:
 
     # Initialize variables to keep track of similarity scores and responses
     max_similarity = -1.0
-    best_response = "No matching answer found."
+    best_responses = []
+
+    # Set a threshold for similarity
+    threshold = 0.5  # You can adjust this threshold as needed
 
     # Iterate through the data frames and check for similarity
     for df in data_frames:
@@ -47,13 +50,18 @@ while True:
             most_similar_index = cosine_similarities.argmax()
 
             # Get the corresponding answer and similarity score
-            response = df.iloc[most_similar_index]
             similarity = cosine_similarities[0][most_similar_index]
 
-            # Update the best response if the current one has a higher similarity score
-            if similarity > max_similarity:
-                max_similarity = similarity
-                best_response = response
+            # If the similarity is above the threshold, consider it a match
+            if similarity > threshold:
+                best_responses.append((df.columns, df.iloc[most_similar_index]))
 
-    # Print the best response
-    print("Chat Bot : " + str(len(best_response)))
+    # Print the matching rows with column names from all data frames
+    if best_responses:
+        print("Matching Responses:")
+        for columns, response in best_responses:
+            print("Matching Columns:", columns)
+            print("Matching Row:")
+            print(response)
+    else:
+        print("No matching answer found.")
